@@ -139,7 +139,7 @@ def loadList(orders):
     print('Loading data into Big Query.')
     for order in orders:
         lenCounter = lenCounter + 1
-        insertString = insertString + "( '" + str(order['orderId']) +"' , '"+ str(order['creationDate']) +"' , '"+ str(order['status']) +"' , '"+ str(order['paymentNames']) +"' , "+ str(order['totalValue']) +" , '"+ str(order['shipmentStatus']) +"' , '"+ str(order['orderStatusID']) +"' , '"+ "VTEX" + "' , '" + config.storeName +"' , '" + str(order['clientDocument']) +"' , "+ str(order['daysSinceLastOrder']) +" , "+ str(order['repurchaseNumber']) +" , "+ str(order['repurchaseClient'])+" )"
+        insertString = insertString + "( '" + str(order['orderId']) +"' , '"+ str(order['creationDate']) +"' , '"+ str(order['status']) +"' , '"+ str(order['totalValue']) +"' , "+ str(order['paymentNames']) +" , '"+ str(order['utmSource']) +"' , '"+ str(order['utmCampaign']) +"' , '"+ str(order['seller']) + "' , '" + str(order['clientName']) +"' , '" + str(order['document']) +"' , "+ str(order['daysSinceLastOrder']) +" , "+ str(order['repurchaseNumber']) +" , "+ str(order['repurchaseClient'])+" , "+ "VTEX" +" , "+ config.storeName + " )"
         if lenCounter != len(orders):
             insertString = insertString + " , "
     if insertString == "":
