@@ -14,13 +14,13 @@ def run():
         print('------------------------')
         print(configuration.setStoreName(config.store))
         configuration.setConfig(config.data)
-        updateOrders()
+        
         days = dt.today() - config.lastUpdateDatalake
         days = days.days
         newOrders(days - 1)
         newOrdersCounter = newOrdersCounter + int(newOrders(days))
         storeCounter = storeCounter + 1
-    
+        updateOrders()
     processTime = time.time() - main_time
     
     sendEmail("""<p>Lojas VTEX - DATALAKE atualizadas com sucesso: {}/5 </p>

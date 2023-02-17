@@ -13,6 +13,14 @@ def insertOrders(orderId , creationDate , status , totalValue , paymentNames , u
         print(f'Encountered errors while inserting rows: {errors}')
     return counter
 
+def insert(insertString):
+    query_job = config.client.query("""
+        INSERT INTO {} (orderId , creationDate , status , paymentNames , totalValue , shipmentStatus , orderStatusID , platformName , ecommerceName , clientDocument , daysSinceLastOrder , repurchaseNumber , repurchaseClient)
+        VALUES {}
+        """.format(config.table_id , insertString))
+    orders = query_job.result()
+    return orders
+
 #lê dados dos big query -- aka READ
 def read(table_id , condition):
     query_job = config.client.query("""

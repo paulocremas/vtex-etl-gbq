@@ -11,7 +11,7 @@ client = bigquery.Client()
 table_id = "sacred-drive-353312.datalakes.orders"
 
 def storesConfig():
-    query = read('sacred-drive-353312.config_vtex.storesConfig' , 'TRUE')
+    query = read('sacred-drive-353312.config_vtex.storesConfig' , 'active is True AND lastUpdateDatalake <> DATE("{}")'.format(str(datetime.today() - timedelta(1))[0:10]))
     return query
 
 def setConfig(config):

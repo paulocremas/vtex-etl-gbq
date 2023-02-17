@@ -1,7 +1,7 @@
 import requests
 import modules.config as config
 from datetime import datetime , timedelta
-from modules.CRUD import insertOrders , read, update , readRepurchaseData , lastUpdateDate
+from modules.CRUD import insert , read, update , readRepurchaseData , lastUpdateDate
 from collections import defaultdict
 
 #Lê cada página e retorna uma lista com os pedidos concatenados de todas as páginas
@@ -89,10 +89,10 @@ def treatOrdersInsertion(orders):
 
             completeorders.extend(data_set)
     print('Data was successfully treated. ' + str(counter) + ' orders.')
-    # if repurchaseUpdateList:
-    #     update("repurchaseClient = True" , "clientDocument IN ({})".format(str(repurchaseUpdateList)[1:-1]) , "Repurchase status updated.")
-    # else:
-    #     print("No recurrent clients to uptade.")
+    if repurchaseUpdateList:
+        update("repurchaseClient = True" , "clientDocument IN ({})".format(str(repurchaseUpdateList)[1:-1]) , "Repurchase status updated.")
+    else:
+        print("No recurrent clients to uptade.")
     return completeorders
 
 #this part is responsible for getting more specific information about each order, its called only for insertions
@@ -130,13 +130,27 @@ def treatOrdersUpdate(orders):
     return completeorders
 
 def loadList(orders):
-    counter = 0
+    lenCounter = 0
+    try:
+        lenOrders = len(orders)
+    except:
+        lenOrders = 0
+    insertString = ""
     print('Loading data into Big Query.')
     for order in orders:
-        counter = counter + int(insertOrders(order['orderId'] , order['creationDate'] , order['status'] , order['totalValue'] , order['paymentNames'] , order['utmSource'] , order['utmCampaign'] , order['seller'] , order['clientName'] , order['document'] , order['daysSinceLastOrder'] , order['repurchaseNumber'] , order['repurchaseClient']))
-    print('Data was successfully loaded.')
-    lastUpdateDate(str(datetime.today() - timedelta(1))[0:10])
-    return counter
+        lenCounter = lenCounter + 1
+        insertString = insertString + "( '" + str(order['orderId']) +"' , '"+ str(order['creationDate']) +"' , '"+ str(order['status']) +"' , '"+ str(order['paymentNames']) +"' , "+ str(order['totalValue']) +" , '"+ str(order['shipmentStatus']) +"' , '"+ str(order['orderStatusID']) +"' , '"+ "VTEX" + "' , '" + config.storeName +"' , '" + str(order['clientDocument']) +"' , "+ str(order['daysSinceLastOrder']) +" , "+ str(order['repurchaseNumber']) +" , "+ str(order['repurchaseClient'])+" )"
+        if lenCounter != len(orders):
+            insertString = insertString + " , "
+    if insertString == "":
+        print("No insertions to execute.")
+        lastUpdateDate(str(datetime.today() - timedelta(1))[0:10])
+    else:
+        insert(insertString)
+        print('Data was successfully loaded.')
+        lastUpdateDate(str(datetime.today() - timedelta(1))[0:10])
+    
+    return lenOrders
 
 def newOrders(counter):
     while counter > 0:
