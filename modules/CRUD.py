@@ -15,7 +15,7 @@ def insertOrders(orderId , creationDate , status , totalValue , paymentNames , u
 
 def insert(insertString):
     query_job = config.client.query("""
-        INSERT INTO {} (orderId , creationDate , status , totalValue , utmSource , utmCampaign , seller , clientName , document , daysSinceLastOrder , repurchaseNumber , repurchaseClient , platformName , ecommerceName)
+        INSERT INTO {} (orderId , creationDate , status , totalValue , paymentNames , utmSource , utmCampaign , seller , clientName , clientDocument , daysSinceLastOrder , repurchaseNumber , repurchaseClient , platformName , ecommerceName)
         VALUES {}
         """.format(config.table_id , insertString))
     orders = query_job.result()

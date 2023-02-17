@@ -32,15 +32,15 @@ def treatOrdersInsertion(orders):
             counter = counter + 1
 
             info = getInfo(order['orderId'])
-            if info['utmSource'] == None:
+            if info['utmSource'] == None or info['utmSource'] == "None":
                 utmSource = "Null"
             else:
                 utmSource = info['utmSource']
-            if info['utmCampaign'] == None:
+            if info['utmCampaign'] == None or info['utmCampaign'] == "None":
                 utmCampaign = "Null"
             else:
                 utmCampaign = info['utmCampaign']
-            if info['seller'] == None:
+            if info['seller'] == None or info['seller'] == "None":
                 seller = "Null"
             else:
                 seller = info['seller']
@@ -148,7 +148,7 @@ def loadList(orders):
     print('Loading data into Big Query.')
     for order in orders:
         lenCounter = lenCounter + 1
-        insertString = insertString + "( '" + str(order['orderId']) +"' , '"+ str(order['creationDate']) +"' , '"+ str(order['status']) +"' , '"+ str(order['totalValue']) +"' , "+ str(order['paymentNames']) +" , '"+ str(order['utmSource']) +"' , '"+ str(order['utmCampaign']) +"' , '"+ str(order['seller']) + "' , '" + str(order['clientName']) +"' , '" + str(order['document']) +"' , "+ str(order['daysSinceLastOrder']) +" , "+ str(order['repurchaseNumber']) +" , "+ str(order['repurchaseClient'])+" , "+ "'VTEX'" +" , '"+ config.storeName + "' )"
+        insertString = insertString + "( '" + str(order['orderId']) +"' , '"+ str(order['creationDate']) +"' , '"+ str(order['status']) +"' , "+ str(order['totalValue']) +" , '"+ str(order['paymentNames']) +"' , '"+ str(order['utmSource']) +"' , '"+ str(order['utmCampaign']) +"' , '"+ str(order['seller']) + "' , '" + str(order['clientName']) +"' , '" + str(order['document']) +"' , "+ str(order['daysSinceLastOrder']) +" , "+ str(order['repurchaseNumber']) +" , "+ str(order['repurchaseClient'])+" , "+ "'VTEX'" +" , '"+ config.storeName + "' )"
         if lenCounter != len(orders):
             insertString = insertString + " , "
     if insertString == "":
