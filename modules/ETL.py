@@ -33,15 +33,15 @@ def treatOrdersInsertion(orders):
 
             info = getInfo(order['orderId'])
             if info['utmSource'] == None or info['utmSource'] == "None":
-                utmSource = "Null"
+                utmSource = 'Null'
             else:
                 utmSource = info['utmSource']
             if info['utmCampaign'] == None or info['utmCampaign'] == "None":
-                utmCampaign = "Null"
+                utmCampaign = 'Null'
             else:
                 utmCampaign = info['utmCampaign']
             if info['seller'] == None or info['seller'] == "None":
-                seller = "Null"
+                seller = 'Null'
             else:
                 seller = info['seller']
             document = info['document']
@@ -207,12 +207,6 @@ def updateOrders():
         print('sem pedidos para atualizar')
     return
 
-
-    # Carrega os pedidos em formato de OBJETO JSON para serem inseridos através do insertOrders()
-def loadJsonObj(orders):
-    for order in orders:
-        insertOrders(order.orderId , order.creationDate , order.status , order.totalValue , order.paymentNames)
-    return
 
 
 
