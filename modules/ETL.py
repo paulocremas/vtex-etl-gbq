@@ -32,9 +32,18 @@ def treatOrdersInsertion(orders):
             counter = counter + 1
 
             info = getInfo(order['orderId'])
-            utmSource = info['utmSource']
-            utmCampaign = info['utmCampaign']
-            seller = info['seller']
+            if info['utmSource'] == None:
+                utmSource = "Null"
+            else:
+                utmSource = info['utmSource']
+            if info['utmCampaign'] == None:
+                utmCampaign = "Null"
+            else:
+                utmCampaign = info['utmCampaign']
+            if info['seller'] == None:
+                seller = "Null"
+            else:
+                seller = info['seller']
             document = info['document']
 
             order['orderId'] = str(order['orderId'])[:-3]
@@ -48,9 +57,9 @@ def treatOrdersInsertion(orders):
 
 
             #conta a quantidade de dias desde o ultimo pedido
-            repurchaseNumber = None
-            daysSinceLastOrder = None
-            repurchaseClient = None
+            repurchaseNumber = 'Null'
+            daysSinceLastOrder = 'Null'
+            repurchaseClient = 'Null'
 
             repurchaseData = readRepurchaseData(document , config.storeName)
             for repurchase in repurchaseData:
@@ -58,7 +67,7 @@ def treatOrdersInsertion(orders):
                     daysSinceLastOrder = datetime.strptime(order['creationDate'], '%Y-%m-%d %H:%M:%S') - repurchase.f0_
                     daysSinceLastOrder = daysSinceLastOrder.days
                 except:
-                    daysSinceLastOrder = None
+                    daysSinceLastOrder = 'Null'
 
                 if repurchase.f1_ is None:
                     repurchaseNumber = 0
@@ -108,14 +117,14 @@ def getInfo(orderId):
         sellerNumber = sellerNumber[:5]
         seller = sellerName + ' - ' + sellerNumber
     except:
-        seller = None
+        seller = 'Null'
 
     seller = seller[3:]
 
     try:
         return {'utmSource': order['marketingData']['utmSource'],'utmCampaign': order['marketingData']['utmCampaign'], 'seller' : seller , 'document' : order['clientProfileData']['document']}
     except:
-        return {'utmSource': None ,'utmCampaign': None , 'seller' : seller , 'document' : order['clientProfileData']['document']}
+        return {'utmSource': 'Null' ,'utmCampaign': 'Null' , 'seller' : seller , 'document' : order['clientProfileData']['document']}
 
 def treatOrdersUpdate(orders):
     completeorders = []
