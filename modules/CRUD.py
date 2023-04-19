@@ -19,6 +19,7 @@ def insert(insertString):
         VALUES {}
         """.format(config.table_id , insertString))
     orders = query_job.result()
+    print("1 order inserted")
     return orders
 
 #lê dados dos big query -- aka READ

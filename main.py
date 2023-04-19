@@ -17,15 +17,16 @@ def run():
         
         days = dt.today() - config.lastUpdateDatalake
         days = days.days
-        newOrders(days - 1)
+        days = days - 1
         newOrdersCounter = newOrdersCounter + int(newOrders(days))
         storeCounter = storeCounter + 1
         updateOrders()
     processTime = time.time() - main_time
     
-    sendEmail("""<p>Lojas VTEX - DATALAKE atualizadas com sucesso: {}/5 </p>
-    <p>Total de pedidos inseridos no Big Query: {} </p>
-    <p>Tempo de processo: {} segundos</p>""".format(storeCounter,newOrdersCounter,processTime).encode('utf-8'))
+    if newOrdersCounter != 0:
+        sendEmail("""<p>Lojas VTEX - DATALAKE atualizadas com sucesso: {}/5 </p>
+        <p>Total de pedidos inseridos no Big Query: {} </p>
+        <p>Tempo de processo: {} segundos</p>""".format(storeCounter,newOrdersCounter,processTime).encode('utf-8'))
 
     return
 

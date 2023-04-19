@@ -140,6 +140,7 @@ def treatOrdersUpdate(orders):
 
 def loadList(orders):
     lenCounter = 0
+    counter = 0
     try:
         lenOrders = len(orders)
     except:
@@ -147,6 +148,7 @@ def loadList(orders):
     insertString = ""
     print('Loading data into Big Query.')
     for order in orders:
+        counter = counter + 1
         lenCounter = lenCounter + 1
         insertString = insertString + '( "' + str(order['orderId']) +'" , "'+ str(order['creationDate']) +'" , "'+ str(order['status']) +'" , '+ str(order['totalValue']) +' , "'+ str(order['paymentNames']) +'" , "'+ str(order['utmSource']) +'" , "'+ str(order['utmCampaign']) +'" , "'+ str(order['seller']) + '" , "' + str(order['clientName']) +'" , "' + str(order['document']) +'" , '+ str(order['daysSinceLastOrder']) +' , '+ str(order['repurchaseNumber']) +' , '+ str(order['repurchaseClient'])+' , '+ '"VTEX"' +' , "'+ config.storeName + '" )'
         if lenCounter != len(orders):
@@ -162,12 +164,14 @@ def loadList(orders):
     return lenOrders
 
 def newOrders(counter):
+    newOrders = ""
     while counter > 0:
         config.setExtractionDate(config.generalUrl , counter , counter - 1)
         orders = treatOrdersInsertion(extractOrders())
         newOrders = str(loadList(orders))
         print(newOrders + ' New orders')
         counter = counter - 1
+        print(counter)
     return newOrders
 
 def updateOrders():
